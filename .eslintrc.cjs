@@ -159,7 +159,6 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': ['error'],
     'react/boolean-prop-naming': ['error'],
     'react/react-in-jsx-scope': ['off'],
-    'react/button-has-type': ['error'],
     'react/function-component-definition': [
       'error',
       {
