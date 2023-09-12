@@ -13,8 +13,10 @@ module.exports = {
   parserOptions: {
     project: ['./tsconfig.json'],
   },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'simple-import-sort'],
   rules: {
+    'simple-import-sort/imports': ['warn'],
+    'simple-import-sort/exports': ['warn'],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
@@ -52,7 +54,6 @@ module.exports = {
     ],
     'max-lines': ['warn', { max: 500 }],
     'multiline-comment-style': ['warn', 'starred-block'],
-    'sort-imports': ['warn'],
     'sort-vars': ['warn'],
     'spaced-comment': ['warn'],
     yoda: ['warn', 'never'],
@@ -110,7 +111,7 @@ module.exports = {
     'keyword-spacing': ['error'],
     'line-comment-position': ['error', 'beside'],
     'linebreak-style': ['off'],
-    'max-len': ['warn', { code: 80 }],
+    'max-len': ['off', { code: 80 }],
     'max-statements-per-line': ['error'],
     'no-multi-spaces': ['error'],
     'no-multiple-empty-lines': ['error', { max: 1 }],
@@ -159,6 +160,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': ['error'],
     'react/boolean-prop-naming': ['error'],
     'react/react-in-jsx-scope': ['off'],
+    'react/button-has-type': ['error'],
     'react/function-component-definition': [
       'error',
       {
@@ -170,4 +172,31 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': ['off'],
     '@typescript-eslint/no-floating-promises': ['off'],
   },
+  overrides: [
+    // override "simple-import-sort" config
+    {
+      files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+      rules: {
+        'simple-import-sort/imports': [
+          'warn',
+          {
+            groups: [
+              // Packages `react` related packages come first.
+              ['^react', '^@?\\w'],
+              // Internal packages.
+              ['^(@|components)(/.*|$)'],
+              // Side effect imports.
+              ['^\\u0000'],
+              // Parent imports. Put `..` last.
+              ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+              // Other relative imports. Put same-folder imports and `.` last.
+              ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+              // Style imports.
+              ['^.+\\.?(css)$'],
+            ],
+          },
+        ],
+      },
+    },
+  ],
 };

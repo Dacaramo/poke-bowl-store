@@ -30,20 +30,22 @@ const RangeInput: FC<Props> = ({
   areIndividualLabelsHidden = true,
 }) => {
   return (
-    <fieldset className='flex flex-row flex-wrap gap-2 items-center border-t border-zinc-100'>
-      <legend className='font-lg font-nunito font-bold'>{legend}</legend>
-      <TypeableInput
-        type='number'
-        size='sm'
-        isLabelHidden={areIndividualLabelsHidden}
-        {...lowerLimitInput}
-      />
-      <TypeableInput
-        type='number'
-        size='sm'
-        isLabelHidden={areIndividualLabelsHidden}
-        {...upperLimitInput}
-      />
+    <fieldset className='flex flex-col gap-2 items-start'>
+      <legend className='ml-2 font-lg font-nunito font-light'>{legend}</legend>
+      <div className='flex flex-row items-center gap-2'>
+        <TypeableInput
+          type='number'
+          size='sm'
+          isLabelHidden={areIndividualLabelsHidden}
+          {...lowerLimitInput}
+        />
+        <TypeableInput
+          type='number'
+          size='sm'
+          isLabelHidden={areIndividualLabelsHidden}
+          {...upperLimitInput}
+        />
+      </div>
     </fieldset>
   );
 };

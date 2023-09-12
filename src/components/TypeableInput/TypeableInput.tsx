@@ -42,7 +42,7 @@ const TypeableInput: FC<Props> = ({
   } else if (size === 'lg') {
     inputClasses += 'w-[325px] h-[40px] pl-[12.5px] pr-[41.5px] text-xl';
   }
-  let labelClasses = 'mb-1 font-nunito font-bold text-zinc-950 ';
+  let labelClasses = 'mb-1 font-nunito font-light text-zinc-950 ';
   if (size === 'sm') {
     labelClasses += 'ml-2 text-sm ';
   } else if (size === 'md') {
