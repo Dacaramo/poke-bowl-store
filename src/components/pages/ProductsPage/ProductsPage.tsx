@@ -16,6 +16,7 @@ import { Item } from '../../../model/Item';
 import { Pokemon } from '../../../model/Pokemon';
 import { ProductType } from '../../../model/Product';
 import CheckboxGroup from '../../CheckboxGroup/CheckboxGroup';
+import ListItem from '../../ListItem/ListItem';
 import RangeInput from '../../RangeInput/RangeInput';
 import Select from '../../Select/Select';
 import TypeableInput from '../../TypeableInput/TypeableInput';
@@ -30,14 +31,12 @@ const ProductsPage: FC<Props> = () => {
   const [isFilterSectionShowing, setIsFilterSectionShowing] =
     useState<boolean>(true);
 
-  /*
-   * Const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
-   *   queryKey: ['pokemons'],
-   *   queryFn: () => {
-   *     return getPokemons() as Promise<Array<Pokemon>>;
-   *   },
-   * });
-   */
+  const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
+    queryKey: ['pokemons'],
+    queryFn: () => {
+      return getPokemons() as Promise<Array<Pokemon>>;
+    },
+  });
 
   /*
    * Const { data: items, isLoading: areItemsLoading } = useQuery({
@@ -136,207 +135,225 @@ const ProductsPage: FC<Props> = () => {
           size={150}
         />
       ) : (
-        <form
-          className='w-[100%] flex flex-col gap-2 items-start'
+        <div
+          className='w-[100%] flex flex-col gap-4 items-start'
           onSubmit={handleSubmit}
         >
-          <div className='w-[100%] flex flex-col gap-2 justify-center items-center sm:flex-row'>
-            <div className='flex flex-row gap-4'>
-              <button
-                type='button'
-                className={`${
-                  productType === 'pokemon'
-                    ? selectedButtonClasses
-                    : unselectedButtonClasses
-                }`}
-                onClick={() => setProductType('pokemon')}
-              >
-                Pokemons
-              </button>
-              <button
-                type='button'
-                className={`${
-                  productType === 'item'
-                    ? selectedButtonClasses
-                    : unselectedButtonClasses
-                }`}
-                onClick={() => setProductType('item')}
-              >
-                Items
-              </button>
-            </div>
+          <div className='self-center flex flex-row gap-4'>
             <button
               type='button'
-              className='flex flex-row items-center text-md font-nunito font-light sm:hidden'
-              onClick={handleClickOnFiltersButton}
+              className={`${
+                productType === 'pokemon'
+                  ? selectedButtonClasses
+                  : unselectedButtonClasses
+              }`}
+              onClick={() => setProductType('pokemon')}
             >
-              {`${isFilterSectionShowing ? 'Hide' : 'Show'} filters`}
-              {isFilterSectionShowing ? (
-                <FontAwesomeIcon
-                  className='ml-2'
-                  icon={faCaretUp}
-                  size='sm'
-                  color={ZINC_950}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  className='ml-2'
-                  icon={faCaretDown}
-                  size='sm'
-                  color={ZINC_950}
-                />
-              )}
+              Pokemons
+            </button>
+            <button
+              type='button'
+              className={`${
+                productType === 'item'
+                  ? selectedButtonClasses
+                  : unselectedButtonClasses
+              }`}
+              onClick={() => setProductType('item')}
+            >
+              Items
             </button>
           </div>
-          {filters &&
-            isFilterSectionShowing &&
-            filters[productType].map((filterGroup) => {
-              return (
-                <fieldset
-                  key={filterGroup.groupName}
-                  className='w-[100%] flex flex-col items-start gap-2 border-t sm:w-[250px]'
-                >
-                  <legend className='text-lg font-nunito font-bold'>
-                    {filterGroup.groupName}
-                  </legend>
-                  {filterGroup.filters.map((filter) => {
-                    switch (filter.filteringComponent) {
-                      case 'checkbox-group':
-                        return (
-                          <CheckboxGroup
-                            legend={
-                              filter.possibleValues.length > 1
-                                ? filter.filterName
-                                : undefined
-                            }
-                            options={filter.possibleValues}
-                            value={
-                              (filtersValues[
-                                filter.filterName
-                              ] as Array<string>) ?? []
-                            }
-                            onChange={(value) => {
-                              handleChangeOnCheckboxGroup(
-                                value,
-                                filter.filterName,
-                                filter.maxChecks
-                              );
-                            }}
-                          />
-                        );
-                      case 'number-input':
-                        return (
-                          <TypeableInput
-                            type='number'
-                            id={filter.filterName}
-                            name={filter.filterName}
-                            label={filter.filterName}
-                            isLabelHidden={false}
-                            placeholder={filter.filterName}
-                            size='md'
-                            value={
-                              (filtersValues[filter.filterName] as string) ?? ''
-                            }
-                            onChange={(e) =>
-                              handleChangeOnInputOrSelect(
-                                e.target.value,
-                                filter.filterName,
-                                true
-                              )
-                            }
-                          />
-                        );
-                      case 'range-input':
-                        return (
-                          <RangeInput
-                            legend={filter.filterName}
-                            areIndividualLabelsHidden
-                            lowerLimitInput={{
-                              id: filter.lowerLimitInputName,
-                              name: filter.lowerLimitInputName,
-                              label: filter.lowerLimitInputName,
-                              placeholder: filter.lowerLimitInputName,
-                              value:
-                                (filtersValues[
-                                  filter.lowerLimitInputName
-                                ] as string) ?? '',
-                              onChange: (e) =>
-                                handleChangeOnInputOrSelect(
-                                  e.target.value,
-                                  filter.lowerLimitInputName,
-                                  true
-                                ),
-                            }}
-                            upperLimitInput={{
-                              id: filter.upperLimitInputName,
-                              name: filter.upperLimitInputName,
-                              label: filter.upperLimitInputName,
-                              placeholder: filter.upperLimitInputName,
-                              value:
-                                (filtersValues[
-                                  filter.upperLimitInputName
-                                ] as string) ?? '',
-                              onChange: (e) =>
-                                handleChangeOnInputOrSelect(
-                                  e.target.value,
-                                  filter.upperLimitInputName,
-                                  true
-                                ),
-                            }}
-                          />
-                        );
-                      case 'text-input':
-                        return (
-                          <TypeableInput
-                            type='text'
-                            id={filter.filterName}
-                            name={filter.filterName}
-                            label={filter.filterName}
-                            isLabelHidden={false}
-                            placeholder={filter.filterName}
-                            size='md'
-                            value={
-                              (filtersValues[filter.filterName] as string) ?? ''
-                            }
-                            onChange={(e) =>
-                              handleChangeOnInputOrSelect(
-                                e.target.value,
-                                filter.filterName
-                              )
-                            }
-                          />
-                        );
-                      case 'select':
-                        return (
-                          <Select
-                            id={filter.filterName}
-                            label={filter.filterName}
-                            isLabelHidden={false}
-                            options={filter.possibleValues}
-                            isNoneOptionAllowed
-                            value={
-                              (filtersValues[filter.filterName] as string) ?? ''
-                            }
-                            onChange={(value) =>
-                              handleChangeOnInputOrSelect(
-                                value,
-                                filter.filterName
-                              )
-                            }
-                          />
-                        );
-                      default:
-                        throw Error(
-                          `Unknown filtering component [${
-                            (filter as Filter).filteringComponent
-                          }]. Maybe the filters endpoint is returning something you are not handling correctly here.`
-                        );
-                    }
-                  })}
-                </fieldset>
-              );
-            })}
-        </form>
+          <button
+            type='button'
+            className='self-center flex flex-row items-center text-md font-nunito font-light sm:hidden'
+            onClick={handleClickOnFiltersButton}
+          >
+            {`${isFilterSectionShowing ? 'Hide' : 'Show'} filters`}
+            {isFilterSectionShowing ? (
+              <FontAwesomeIcon
+                className='ml-2'
+                icon={faCaretUp}
+                size='sm'
+                color={ZINC_950}
+              />
+            ) : (
+              <FontAwesomeIcon
+                className='ml-2'
+                icon={faCaretDown}
+                size='sm'
+                color={ZINC_950}
+              />
+            )}
+          </button>
+          <div className='w-[100%] flex flex-row gap-2'>
+            <form className='p-2 flex flex-col gap-2 items-start sm:w-[250px] sm:border sm:border-zinc-100'>
+              {filters &&
+                isFilterSectionShowing &&
+                filters[productType].map((filterGroup) => {
+                  return (
+                    <fieldset
+                      key={filterGroup.groupName}
+                      className='w-[100%] flex flex-col items-start gap-2 border-t border-zinc-100'
+                    >
+                      <legend className='text-lg font-nunito font-bold'>
+                        {filterGroup.groupName}
+                      </legend>
+                      {filterGroup.filters.map((filter) => {
+                        switch (filter.filteringComponent) {
+                          case 'checkbox-group':
+                            return (
+                              <CheckboxGroup
+                                legend={
+                                  filter.possibleValues.length > 1
+                                    ? filter.filterName
+                                    : undefined
+                                }
+                                options={filter.possibleValues}
+                                value={
+                                  (filtersValues[
+                                    filter.filterName
+                                  ] as Array<string>) ?? []
+                                }
+                                onChange={(value) => {
+                                  handleChangeOnCheckboxGroup(
+                                    value,
+                                    filter.filterName,
+                                    filter.maxChecks
+                                  );
+                                }}
+                              />
+                            );
+                          case 'number-input':
+                            return (
+                              <TypeableInput
+                                type='number'
+                                id={filter.filterName}
+                                name={filter.filterName}
+                                label={filter.filterName}
+                                isLabelHidden={false}
+                                placeholder={filter.filterName}
+                                size='md'
+                                value={
+                                  (filtersValues[
+                                    filter.filterName
+                                  ] as string) ?? ''
+                                }
+                                onChange={(e) =>
+                                  handleChangeOnInputOrSelect(
+                                    e.target.value,
+                                    filter.filterName,
+                                    true
+                                  )
+                                }
+                              />
+                            );
+                          case 'range-input':
+                            return (
+                              <RangeInput
+                                legend={filter.filterName}
+                                areIndividualLabelsHidden
+                                lowerLimitInput={{
+                                  id: filter.lowerLimitInputName,
+                                  name: filter.lowerLimitInputName,
+                                  label: filter.lowerLimitInputName,
+                                  placeholder: filter.lowerLimitInputName,
+                                  value:
+                                    (filtersValues[
+                                      filter.lowerLimitInputName
+                                    ] as string) ?? '',
+                                  onChange: (e) =>
+                                    handleChangeOnInputOrSelect(
+                                      e.target.value,
+                                      filter.lowerLimitInputName,
+                                      true
+                                    ),
+                                }}
+                                upperLimitInput={{
+                                  id: filter.upperLimitInputName,
+                                  name: filter.upperLimitInputName,
+                                  label: filter.upperLimitInputName,
+                                  placeholder: filter.upperLimitInputName,
+                                  value:
+                                    (filtersValues[
+                                      filter.upperLimitInputName
+                                    ] as string) ?? '',
+                                  onChange: (e) =>
+                                    handleChangeOnInputOrSelect(
+                                      e.target.value,
+                                      filter.upperLimitInputName,
+                                      true
+                                    ),
+                                }}
+                              />
+                            );
+                          case 'text-input':
+                            return (
+                              <TypeableInput
+                                type='text'
+                                id={filter.filterName}
+                                name={filter.filterName}
+                                label={filter.filterName}
+                                isLabelHidden={false}
+                                placeholder={filter.filterName}
+                                size='md'
+                                value={
+                                  (filtersValues[
+                                    filter.filterName
+                                  ] as string) ?? ''
+                                }
+                                onChange={(e) =>
+                                  handleChangeOnInputOrSelect(
+                                    e.target.value,
+                                    filter.filterName
+                                  )
+                                }
+                              />
+                            );
+                          case 'select':
+                            return (
+                              <Select
+                                id={filter.filterName}
+                                label={filter.filterName}
+                                isLabelHidden={false}
+                                options={filter.possibleValues}
+                                isNoneOptionAllowed
+                                value={
+                                  (filtersValues[
+                                    filter.filterName
+                                  ] as string) ?? ''
+                                }
+                                onChange={(value) =>
+                                  handleChangeOnInputOrSelect(
+                                    value,
+                                    filter.filterName
+                                  )
+                                }
+                              />
+                            );
+                          default:
+                            throw Error(
+                              `Unknown filtering component [${
+                                (filter as Filter).filteringComponent
+                              }]. Maybe the filters endpoint is returning something you are not handling correctly here.`
+                            );
+                        }
+                      })}
+                    </fieldset>
+                  );
+                })}
+            </form>
+            <ul className='flex-1 grid grid-cols-[repeat(auto-fill,minmax(275px,1fr))] gap-5'>
+              {pokemons?.map((pokemon) => {
+                return (
+                  <ListItem
+                    key={pokemon.id}
+                    product={pokemon}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       )}
     </>
   );

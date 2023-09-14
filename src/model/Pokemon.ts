@@ -1,46 +1,46 @@
 export interface Pokemon {
   id: number;
   name: string;
-  color: string;
-  price: number;
+  color?: string;
+  price?: number;
   evolutions: Array<Array<string>>;
-  habitat: string;
-  hasGenderDifferences: boolean;
-  isBaby: boolean;
-  isLegendary: boolean;
-  isMythical: boolean;
+  habitat?: string;
+  hasGenderDifferences?: boolean;
+  isBaby?: boolean;
+  isLegendary?: boolean;
+  isMythical?: boolean;
   /**
    * Up to 255, the higher, the happier
    */
-  baseHappiness: number;
+  baseHappiness?: number;
   /**
    * Up to 255, the higher, the easier to catch
    */
-  captureRate: number;
+  captureRate?: number;
   /**
    * The generation this Pokémon species was introduced in
    */
-  generation: string;
+  generation?: string;
   /**
    * The rate at which this Pokémon species gains levels.
    */
-  growthRate: string;
+  growthRate?: string;
   /**
    * The shape of this Pokémon for Pokédex search
    */
-  shape: string;
+  shape?: string;
   /**
    * The base experience gained for defeating this Pokémon.
    */
-  baseExperience: number;
+  baseExperience?: number;
   /**
    * The height of this Pokémon in decimeters.
    */
-  height: number;
+  height?: number;
   /**
    * The weight of this Pokémon in hectograms.
    */
-  weight: number;
+  weight?: number;
   /**
    * A list containing the name of the games where this pokemon appears
    */

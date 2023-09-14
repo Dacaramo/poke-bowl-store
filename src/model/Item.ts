@@ -5,4 +5,5 @@ export interface Item {
   attributes: Array<string>;
   category: string;
   effect: string;
+  sprites: Array<string>;
 }

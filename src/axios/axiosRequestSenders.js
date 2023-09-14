@@ -7,6 +7,7 @@ import { makeStringDisplayable } from '../utils/stringUtils';
 import {
   determinePokemonTypeColor,
   determineProductPrice,
+  extractPokemonIdFromUrl,
   getArrayFromEvolutionChain,
 } from '../utils/modelUtils';
 
@@ -15,70 +16,75 @@ import { axiosInstance } from './axiosConfig';
 /* POKEMONS RELATED REQUEST SENDERS */
 
 export const getPokemons = async () => {
-  const pokemonsNames = await getPokemonsNames();
+  const pokemonsIds = await getPokemonsIds();
   const pokemonsMainData = await axios.all(
-    pokemonsNames.map(async (name) => {
-      return await getPokemonMainData(name);
+    pokemonsIds.map(async (id) => {
+      return await getPokemonMainData(id);
     })
   );
   const pokemonsSpeciesData = await axios.all(
-    pokemonsNames.map(async (name) => {
-      return await getPokemonSpeciesData(name);
+    pokemonsIds.map(async (id) => {
+      return await getPokemonSpeciesData(id);
     })
   );
 
   let pokemons = [];
-  for (let i = 0; i < pokemonsNames.length; i++) {
+  for (let i = 0; i < pokemonsIds.length; i++) {
     pokemons.push({
       ...pokemonsMainData[i],
       ...pokemonsSpeciesData[i],
     });
   }
 
+  console.log('@@@@@pokemons [axiosRequestSenders.js]', pokemons);
+
   return pokemons;
 };
 
-const getPokemonsNames = async () => {
-  const axiosResponse = await axiosInstance.get('/pokemon', {
+const getPokemonsIds = async () => {
+  const axiosResponse = await axiosInstance.get('/pokemon-species', {
     params: {
       limit: 2000,
     },
   });
   const allData = axiosResponse.data;
-  const neededData = allData.results.map(({ name }) => name);
+  const neededData = allData.results.map(({ url }) =>
+    extractPokemonIdFromUrl(url)
+  );
 
   return neededData;
 };
 
-const getPokemonMainData = async (pokemonName) => {
-  const axiosResponse = await axiosInstance.get(`/pokemon/${pokemonName}`);
+const getPokemonMainData = async (pokemonId) => {
+  const axiosResponse = await axiosInstance.get(`/pokemon/${pokemonId}`);
   const allData = axiosResponse.data;
   const neededData = {
     id: allData.id,
-    name: makeStringDisplayable(allData.name),
-    price: determineProductPrice(allData, 'pokemon'),
+    price: allData.baseExperience
+      ? determineProductPrice(allData, 'pokemon')
+      : undefined,
     /* Comes in hectograms wanted in kilograms */
-    weight: allData.weight / 10,
+    weight: allData.weight ? allData.weight / 10 : undefined,
     /* Comes in decimeters, wanted in centimeters */
-    height: allData.height * 10,
-    baseExperience: allData.baseExperience,
+    height: allData.height ? allData.height * 10 : undefined,
+    baseExperience: allData.baseExperience ?? undefined,
     games: allData.gameIndices.map((val) => {
-      makeStringDisplayable(val.version.name);
+      return makeStringDisplayable(val.version.name);
     }),
     sprites: [
-      allData.other.dreamWorld.frontDefault,
-      allData.other.dreamWorld.frontFemale,
-      allData.other.home.frontDefault,
-      allData.other.home.frontFemale,
-      allData.other.home.frontShiny,
-      allData.other.home.frontShinyFemale,
-      allData.other.officialArtwork.frontDefault,
-      allData.other.officialArtwork.frontShiny,
+      allData.sprites.other.dreamWorld.frontDefault,
+      allData.sprites.other.dreamWorld.frontFemale,
+      allData.sprites.other.home.frontDefault,
+      allData.sprites.other.home.frontFemale,
+      allData.sprites.other.home.frontShiny,
+      allData.sprites.other.home.frontShinyFemale,
+      allData.sprites.other.officialArtwork.frontDefault,
+      allData.sprites.other.officialArtwork.frontShiny,
     ].filter((val) => val !== null),
     stats: allData.stats.map((val) => {
       return {
         name: makeStringDisplayable(val.stat.name),
-        baseValue: val.baseState,
+        baseValue: val.baseStat,
       };
     }),
     types: allData.types.map((val) => {
@@ -92,27 +98,40 @@ const getPokemonMainData = async (pokemonName) => {
   return neededData;
 };
 
-const getPokemonSpeciesData = async (pokemonName) => {
+const getPokemonSpeciesData = async (pokemonId) => {
   const { data: speciesData } = await axiosInstance.get(
-    `/pokemon-species/${pokemonName}`
+    `/pokemon-species/${pokemonId}`
   );
-  const { data: evolutionChainData } = await axios.get(
+  const { data: evolutionChainData } = await axiosInstance.get(
     speciesData.evolutionChain.url
   );
 
   const neededData = {
-    color: makeStringDisplayable(speciesData.color.name),
-    shape: makeStringDisplayable(speciesData.shape.name),
-    habitat: makeStringDisplayable(speciesData.habitat.name),
-    generation: makeStringDisplayable(speciesData.generation.name),
-    baseHappiness: speciesData.baseHappiness,
-    growthRate: makeStringDisplayable(speciesData.growthRate.name),
-    captureRate: speciesData.captureRate,
-    hasGenderDifferences: speciesData.hasGenderDifferences,
-    isBaby: speciesData.isBaby,
-    isLegendary: speciesData.isLegendary,
-    isMythical: speciesData.isMythical,
-    evolutions: getArrayFromEvolutionChain(evolutionChainData.chain),
+    name: makeStringDisplayable(speciesData.name),
+    color: speciesData.color
+      ? makeStringDisplayable(speciesData.color.name)
+      : undefined,
+    shape: speciesData.shape
+      ? makeStringDisplayable(speciesData.shape.name)
+      : undefined,
+    habitat: speciesData.habitat
+      ? makeStringDisplayable(speciesData.habitat.name)
+      : undefined,
+    generation: speciesData.generation
+      ? makeStringDisplayable(speciesData.generation.name)
+      : undefined,
+    growthRate: speciesData.growthRate
+      ? makeStringDisplayable(speciesData.growthRate.name)
+      : undefined,
+    evolutions: evolutionChainData.chain
+      ? getArrayFromEvolutionChain(evolutionChainData.chain)
+      : [],
+    baseHappiness: speciesData.baseHappiness ?? undefined,
+    captureRate: speciesData.captureRate ?? undefined,
+    hasGenderDifferences: speciesData.hasGenderDifferences ?? undefined,
+    isBaby: speciesData.isBaby ?? undefined,
+    isLegendary: speciesData.isLegendary ?? undefined,
+    isMythical: speciesData.isMythical ?? undefined,
   };
 
   return neededData;
@@ -175,8 +194,6 @@ export const getFilters = async () => {
     getAvailableAttributes(),
     getAvailableCategories(),
   ]);
-
-  console.log('@@@@@filtersArray', filtersArray);
 
   const filtersObject = {
     pokemon: [
@@ -354,8 +371,6 @@ export const getFilters = async () => {
       },
     ],
   };
-
-  console.log('@@@@@filtersObject', filtersObject);
 
   return filtersObject;
 };

@@ -117,3 +117,8 @@ export const getArrayFromEvolutionChain = (
 
   return groupedNames;
 };
+
+export const extractPokemonIdFromUrl = (url: string): string => {
+  const tokenizedUrl = url.split('/');
+  return tokenizedUrl[tokenizedUrl.length - 2];
+};
