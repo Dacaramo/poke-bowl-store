@@ -1,20 +1,9 @@
-import { FC, MouseEvent as ReactMouseEvent } from 'react';
+import { FC, memo, MouseEvent as ReactMouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  faCartPlus,
-  faMinus,
-  faPlus,
-  faSquareMinus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  GREEN_200,
-  RED_200,
-  ZINC_100,
-  ZINC_300,
-  ZINC_950,
-} from '../../constants/colors';
+import { ZINC_950 } from '../../constants/colors';
 import { Item } from '../../model/Item';
 import { Pokemon } from '../../model/Pokemon';
 import { Product } from '../../model/Product';
@@ -136,4 +125,5 @@ const ListItem: FC<Props> = ({ product }) => {
   );
 };
 
-export default ListItem;
+const Memo = memo(ListItem);
+export default Memo;

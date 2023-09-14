@@ -5,45 +5,46 @@ type FilteringComponent =
   | 'text-input'
   | 'select';
 
-interface FilterBase {
+interface FilterDefinitionBase {
   filterName: string;
 }
 
-interface MultipleOptionsFilter extends FilterBase {
+interface MultipleOptionsFilterDefinition extends FilterDefinitionBase {
   possibleValues: Array<string>;
 }
 
-interface RangeInputFilter extends FilterBase {
+interface RangeInputFilterDefinition extends FilterDefinitionBase {
   lowerLimitInputName: string;
   upperLimitInputName: string;
   filteringComponent: 'range-input';
 }
 
-interface SelectFilter extends MultipleOptionsFilter {
+interface SelectFilterDefinition extends MultipleOptionsFilterDefinition {
   filteringComponent: 'select';
 }
 
-interface CheckboxGroupFilter extends MultipleOptionsFilter {
+interface CheckboxGroupFilterDefinition
+  extends MultipleOptionsFilterDefinition {
   filteringComponent: 'checkbox-group';
   maxChecks: number;
 }
 
-interface SingleOptionFilter extends FilterBase {
+interface SingleOptionFilterDefinition extends FilterDefinitionBase {
   filteringComponent: Exclude<
     FilteringComponent,
     'checkbox-group' | 'select' | 'range-input'
   >;
 }
 
-export type Filter =
-  | RangeInputFilter
-  | SelectFilter
-  | CheckboxGroupFilter
-  | SingleOptionFilter;
+export type FilterDefinition =
+  | RangeInputFilterDefinition
+  | SelectFilterDefinition
+  | CheckboxGroupFilterDefinition
+  | SingleOptionFilterDefinition;
 
-export interface FilterGroup {
+export interface FilterDefinitionGroup {
   groupName: string;
-  filters: Array<Filter>;
+  definitions: Array<FilterDefinition>;
 }
 
 export type FilterValue = Array<string> | string | number;

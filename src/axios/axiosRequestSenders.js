@@ -199,7 +199,7 @@ export const getFilters = async () => {
     pokemon: [
       {
         groupName: 'Main filters',
-        filters: [
+        definitions: [
           {
             filterName: 'Name',
             filteringComponent: 'text-input',
@@ -225,7 +225,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Appearance',
-        filters: [
+        definitions: [
           {
             filterName: 'Shape',
             filteringComponent: 'select',
@@ -246,7 +246,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Evolutions',
-        filters: [
+        definitions: [
           {
             filterName: 'Number of evolutions',
             filteringComponent: 'select',
@@ -262,7 +262,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Origin',
-        filters: [
+        definitions: [
           {
             filterName: 'Habitat',
             filteringComponent: 'select',
@@ -282,7 +282,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Measurements',
-        filters: [
+        definitions: [
           {
             filterName: 'Weight',
             lowerLimitInputName: 'Min weight',
@@ -299,7 +299,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Rates',
-        filters: [
+        definitions: [
           {
             filterName: 'Growth rate',
             filteringComponent: 'select',
@@ -327,7 +327,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Stats',
-        filters: filtersArray[7].map((statName) => {
+        definitions: filtersArray[7].map((statName) => {
           return {
             filterName: statName,
             lowerLimitInputName: `Min ${statName.toLowerCase()}`,
@@ -340,7 +340,7 @@ export const getFilters = async () => {
     item: [
       {
         groupName: 'Main filters',
-        filters: [
+        definitions: [
           {
             filterName: 'Name',
             filteringComponent: 'text-input',
@@ -355,7 +355,7 @@ export const getFilters = async () => {
       },
       {
         groupName: 'Other filters',
-        filters: [
+        definitions: [
           {
             filterName: 'Attributes',
             filteringComponent: 'checkbox-group',

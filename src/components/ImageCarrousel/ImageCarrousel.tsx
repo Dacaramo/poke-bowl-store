@@ -66,7 +66,7 @@ const ImageCarrousel: FC<Props> = ({ imageUrls }) => {
           />
         </button>
       </div>
-      <ul className='flex flex-row gap-1'>
+      <ul className='flex flex-row gap-3'>
         {imageUrls.map((url, i) => {
           return (
             <button
