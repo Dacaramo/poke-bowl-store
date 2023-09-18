@@ -17,6 +17,8 @@ export const makeStringDisplayable = (inputString: string): string => {
     return 'Generation VIII';
   } else if (inputString === 'generation-ix') {
     return 'Generation IX';
+  } else if (inputString.startsWith('tm') || inputString.startsWith('tr')) {
+    return inputString.toUpperCase();
   }
 
   const words = inputString.split('-');

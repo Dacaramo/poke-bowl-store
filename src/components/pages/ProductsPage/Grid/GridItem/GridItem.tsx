@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ZINC_950 } from '../../constants/colors';
-import { Item } from '../../model/Item';
-import { Pokemon } from '../../model/Pokemon';
-import { Product } from '../../model/Product';
-import { determineProductType } from '../../utils/modelUtils';
-import { toPriceString } from '../../utils/stringUtils';
-import { useStore } from '../../zustand/store';
-import ImageCarrousel from '../ImageCarrousel/ImageCarrousel';
+import { ZINC_950 } from '../../../../../constants/colors';
+import { Item } from '../../../../../model/Item';
+import { Pokemon } from '../../../../../model/Pokemon';
+import { Product } from '../../../../../model/Product';
+import { determineProductType } from '../../../../../utils/modelUtils';
+import { toPriceString } from '../../../../../utils/stringUtils';
+import { useStore } from '../../../../../zustand/store';
+import ImageCarrousel from '../../../../ImageCarrousel/ImageCarrousel';
 
 interface Props {
   product: Product;
 }
 
-const ListItem: FC<Props> = ({ product }) => {
+const GridItem: FC<Props> = ({ product }) => {
   const navigate = useNavigate();
   const [cartProducts, addToCart, removeFromCart] = useStore((state) => {
     return [state.cartProducts, state.addToCart, state.removeFromCart];
@@ -112,18 +112,11 @@ const ListItem: FC<Props> = ({ product }) => {
             })}
           </ul>
         )}
-        {productType === 'item' && (
-          <>
-            <p>
-              <b>Effect: </b>
-              {(product as Item).effect}
-            </p>
-          </>
-        )}
+        {productType === 'item' && <p>{(product as Item).effect}</p>}
       </div>
     </li>
   );
 };
 
-const Memo = memo(ListItem);
+const Memo = memo(GridItem);
 export default Memo;

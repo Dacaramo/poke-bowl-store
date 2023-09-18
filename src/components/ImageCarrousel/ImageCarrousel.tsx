@@ -66,21 +66,23 @@ const ImageCarrousel: FC<Props> = ({ imageUrls }) => {
           />
         </button>
       </div>
-      <ul className='flex flex-row gap-3'>
-        {imageUrls.map((url, i) => {
-          return (
-            <button
-              key={url}
-              type='button'
-              className='w-[10px] h-[10px] rounded-full'
-              style={{
-                backgroundColor: i === currentIndex ? ZINC_300 : ZINC_100,
-              }}
-              onClick={(e) => handleClickOnSpecificItem(e, i)}
-            ></button>
-          );
-        })}
-      </ul>
+      {imageUrls.length > 1 && (
+        <ul className='flex flex-row gap-3'>
+          {imageUrls.map((url, i) => {
+            return (
+              <button
+                key={url}
+                type='button'
+                className='w-[10px] h-[10px] rounded-full'
+                style={{
+                  backgroundColor: i === currentIndex ? ZINC_300 : ZINC_100,
+                }}
+                onClick={(e) => handleClickOnSpecificItem(e, i)}
+              ></button>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };

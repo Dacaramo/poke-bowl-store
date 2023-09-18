@@ -42,6 +42,7 @@ const FilterSection: FC<Props> = ({
                 case 'checkbox-group':
                   return (
                     <CheckboxGroup
+                      key={definition.filterName}
                       legend={
                         definition.possibleValues.length > 1
                           ? definition.filterName
@@ -65,6 +66,7 @@ const FilterSection: FC<Props> = ({
                 case 'number-input':
                   return (
                     <TypeableInput
+                      key={definition.filterName}
                       type='number'
                       id={definition.filterName}
                       name={definition.filterName}
@@ -87,6 +89,7 @@ const FilterSection: FC<Props> = ({
                 case 'range-input':
                   return (
                     <RangeInput
+                      key={definition.filterName}
                       legend={definition.filterName}
                       areIndividualLabelsHidden
                       lowerLimitInput={{
@@ -126,6 +129,7 @@ const FilterSection: FC<Props> = ({
                 case 'text-input':
                   return (
                     <TypeableInput
+                      key={definition.filterName}
                       type='text'
                       id={definition.filterName}
                       name={definition.filterName}
@@ -147,6 +151,7 @@ const FilterSection: FC<Props> = ({
                 case 'select':
                   return (
                     <Select
+                      key={definition.filterName}
                       id={definition.filterName}
                       label={definition.filterName}
                       isLabelHidden={false}

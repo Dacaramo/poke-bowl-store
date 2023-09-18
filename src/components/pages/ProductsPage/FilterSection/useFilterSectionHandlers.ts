@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { FilterValue } from '../../../../model/Filter';
 
-interface ReturnedHandlers {
+interface ReturnedObject {
   handleChangeOnCheckboxGroup: (
     value: string,
     filterName: string,
@@ -18,7 +18,7 @@ interface ReturnedHandlers {
 export const useFilterSectionHandlers = (
   filterValues: Record<string, FilterValue>,
   setFilterValues: Dispatch<SetStateAction<Record<string, FilterValue>>>
-): ReturnedHandlers => {
+): ReturnedObject => {
   const handleChangeOnCheckboxGroup = (
     value: string,
     filterName: string,

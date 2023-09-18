@@ -171,9 +171,15 @@ const getItemMainData = async (itemName) => {
     id: allData.id,
     name: makeStringDisplayable(allData.name),
     price: determineProductPrice(allData, 'item'),
-    attributes: allData.map(({ name }) => makeStringDisplayable(name)),
+    attributes: allData.attributes.map(({ name }) =>
+      makeStringDisplayable(name)
+    ),
     category: makeStringDisplayable(allData.category.name),
-    effect: allData.effectEntries.shortEffect,
+    sprites: [allData.sprites.default ?? '/unknown.png'],
+    effect:
+      allData.effectEntries.length > 0
+        ? allData.effectEntries[0].shortEffect
+        : 'Unknown description',
   };
 
   return neededData;

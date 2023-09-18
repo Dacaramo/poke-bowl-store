@@ -14,7 +14,7 @@ class UnknownProductError extends Error {
 export const determineProductType = (product: Product): ProductType => {
   if ('baseExperience' in product) {
     return 'pokemon';
-  } else if ('cost' in product) {
+  } else if ('category' in product) {
     return 'item';
   }
 
