@@ -18,6 +18,8 @@ import { ProductType } from '../../../model/Product';
 
 import FilterSection from './FilterSection/FilterSection';
 import Grid from './Grid/Grid';
+import { useProductsPageFiltering } from './useProductsPageFiltering';
+import { useProductsPagePagination } from './useProductsPagePagination';
 
 interface Props {}
 
@@ -28,22 +30,19 @@ const ProductsPage: FC<Props> = () => {
   const [filterValues, setFilterValues] = useState<Record<string, FilterValue>>(
     {}
   );
-  const [resultsOffset, setResultsOffset] = useState<number>(0);
 
-  // const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
-  //   queryKey: ['pokemons'],
-  //   queryFn: () => {
-  //     return getPokemons() as Promise<Array<Pokemon>>;
-  //   },
-  // });
-
+  const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
+    queryKey: ['pokemons'],
+    queryFn: () => {
+      return getPokemons() as Promise<Array<Pokemon>>;
+    },
+  });
   const { data: items, isLoading: areItemsLoading } = useQuery({
     queryKey: ['items'],
     queryFn: () => {
       return getItems() as Promise<Array<Item>>;
     },
   });
-
   const { data: filterDefinitionGroups, isLoading: areFiltersLoading } =
     useQuery({
       queryKey: ['filters'],
@@ -55,31 +54,37 @@ const ProductsPage: FC<Props> = () => {
       },
     });
 
+  const isSomethingLoading =
+    areFiltersLoading || arePokemonsLoading || areItemsLoading;
+  let products: Array<Pokemon> | Array<Item> = [];
+  if (!isSomethingLoading) {
+    if (productType === 'pokemon') {
+      products = pokemons!;
+    } else if (productType === 'item') {
+      products = items!;
+    }
+  }
+
+  const { filteredProducts } = useProductsPageFiltering(
+    products,
+    productType,
+    filterValues
+  );
+  const { paginatedProducts, pageCount, handleClickOnPage } =
+    useProductsPagePagination(filteredProducts, productType);
+
   const buttonTextClasses = 'text-xl font-bold font-nunito';
   const selectedButtonClasses = `${buttonTextClasses} from-cyan-500 to-blue-500 bg-gradient-to-r bg-clip-text text-transparent`;
   const unselectedButtonClasses = `${buttonTextClasses} text-zinc-950`;
-  const paginationButtonClasses = `${buttonTextClasses} px-2 py-1 bg-zinc-100 hover:bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg`;
-  const isSomethingLoading = areFiltersLoading || areItemsLoading;
-  const products = productType === 'item' ? items : items;
-  const resultsPerPage = 30;
-  const endOffset = resultsOffset + resultsPerPage;
-  const currentResults = items?.slice(resultsOffset, endOffset) ?? [];
-  const pageCount = Math.ceil(items?.length ?? 0 / resultsPerPage);
+  const paginationButtonClasses = `p-1 text-sm font-light font-nunito sm:text-xl sm:font-nunito sm:px-2 sm:py-1 hover:bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg`;
 
   const handleClickOnFiltersButton = () => {
     setIsFilterSectionCollapsed((prev) => !prev);
   };
 
-  const handleClickOnPage = (event: { selected: number }) => {
-    const newOffset = (event.selected * resultsPerPage) % (items?.length ?? 1);
-    setResultsOffset(newOffset);
-  };
-
   useEffect(() => {
     setFilterValues({});
   }, [productType]);
-
-  console.log('@@@@@items', items);
 
   return (
     <>
@@ -136,7 +141,7 @@ const ProductsPage: FC<Props> = () => {
               />
             )}
           </button>
-          <div className='w-[100%] flex flex-row gap-2'>
+          <div className='w-[100%] flex flex-col gap-2 sm:flex-row'>
             {!isFilterSectionCollapsed && (
               <FilterSection
                 filterDefinitionGroups={filterDefinitionGroups![productType]}
@@ -144,11 +149,7 @@ const ProductsPage: FC<Props> = () => {
                 setFilterValues={setFilterValues}
               />
             )}
-            <Grid
-              products={
-                productType === 'pokemon' ? currentResults : currentResults
-              }
-            />
+            <Grid products={paginatedProducts} />
           </div>
           <ReactPaginate
             className='p-5 self-center flex flex-row gap-2'

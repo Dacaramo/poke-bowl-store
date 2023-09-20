@@ -2,12 +2,12 @@
 /* @ts-nocheck */
 
 import axios from 'axios';
-import { makeStringDisplayable } from '../utils/stringUtils';
+import { toReadableFormat } from '../utils/stringUtils';
 
 import {
   determinePokemonTypeColor,
   determineProductPrice,
-  extractPokemonIdFromUrl,
+  extractIdFromUrl,
   getArrayFromEvolutionChain,
 } from '../utils/modelUtils';
 
@@ -36,8 +36,6 @@ export const getPokemons = async () => {
     });
   }
 
-  console.log('@@@@@pokemons [axiosRequestSenders.js]', pokemons);
-
   return pokemons;
 };
 
@@ -48,9 +46,7 @@ const getPokemonsIds = async () => {
     },
   });
   const allData = axiosResponse.data;
-  const neededData = allData.results.map(({ url }) =>
-    extractPokemonIdFromUrl(url)
-  );
+  const neededData = allData.results.map(({ url }) => extractIdFromUrl(url));
 
   return neededData;
 };
@@ -69,7 +65,7 @@ const getPokemonMainData = async (pokemonId) => {
     height: allData.height ? allData.height * 10 : undefined,
     baseExperience: allData.baseExperience ?? undefined,
     games: allData.gameIndices.map((val) => {
-      return makeStringDisplayable(val.version.name);
+      return toReadableFormat(val.version.name);
     }),
     sprites: [
       allData.sprites.other.dreamWorld.frontDefault,
@@ -83,16 +79,13 @@ const getPokemonMainData = async (pokemonId) => {
     ].filter((val) => val !== null),
     stats: allData.stats.map((val) => {
       return {
-        name: makeStringDisplayable(val.stat.name),
+        name: (
+          val.stat.name[0].toUpperCase() + val.stat.name.slice(1).toLowerCase()
+        ).replace('-', ' '),
         baseValue: val.baseStat,
       };
     }),
-    types: allData.types.map((val) => {
-      return {
-        name: makeStringDisplayable(val.type.name),
-        color: determinePokemonTypeColor(val.type.name),
-      };
-    }),
+    types: allData.types.map((val) => toReadableFormat(val.type.name)),
   };
 
   return neededData;
@@ -106,32 +99,45 @@ const getPokemonSpeciesData = async (pokemonId) => {
     speciesData.evolutionChain.url
   );
 
+  let rarity = 'Normal';
+  if (speciesData.isBaby) {
+    rarity = 'Baby';
+  } else if (speciesData.isLegendary) {
+    rarity = 'Legendary';
+  } else if (speciesData.isMythical) {
+    rarity = 'Mythical';
+  }
+
+  const evolutions = evolutionChainData.chain
+    ? getArrayFromEvolutionChain(evolutionChainData.chain)
+    : [];
+
   const neededData = {
-    name: makeStringDisplayable(speciesData.name),
+    name: toReadableFormat(speciesData.name),
     color: speciesData.color
-      ? makeStringDisplayable(speciesData.color.name)
+      ? toReadableFormat(speciesData.color.name)
       : undefined,
     shape: speciesData.shape
-      ? makeStringDisplayable(speciesData.shape.name)
+      ? toReadableFormat(speciesData.shape.name)
       : undefined,
     habitat: speciesData.habitat
-      ? makeStringDisplayable(speciesData.habitat.name)
+      ? toReadableFormat(speciesData.habitat.name)
       : undefined,
     generation: speciesData.generation
-      ? makeStringDisplayable(speciesData.generation.name)
+      ? toReadableFormat(speciesData.generation.name)
       : undefined,
     growthRate: speciesData.growthRate
-      ? makeStringDisplayable(speciesData.growthRate.name)
+      ? toReadableFormat(speciesData.growthRate.name)
       : undefined,
-    evolutions: evolutionChainData.chain
-      ? getArrayFromEvolutionChain(evolutionChainData.chain)
-      : [],
+    evolutions,
+    numberOfEvolutions: evolutions.length,
+    hasBranchedEvolutions: evolutions.some(
+      (stepEvolutions) => stepEvolutions.length > 1
+    ),
     baseHappiness: speciesData.baseHappiness ?? undefined,
     captureRate: speciesData.captureRate ?? undefined,
     hasGenderDifferences: speciesData.hasGenderDifferences ?? undefined,
-    isBaby: speciesData.isBaby ?? undefined,
-    isLegendary: speciesData.isLegendary ?? undefined,
-    isMythical: speciesData.isMythical ?? undefined,
+    rarity,
   };
 
   return neededData;
@@ -140,10 +146,10 @@ const getPokemonSpeciesData = async (pokemonId) => {
 /* ITEMS RELATED REQUEST SENDERS */
 
 export const getItems = async () => {
-  const itemsNames = await getItemNames();
+  const itemsIds = await getItemsIds();
   const itemsMainData = await axios.all(
-    itemsNames.map(async (name) => {
-      return await getItemMainData(name);
+    itemsIds.map(async (id) => {
+      return await getItemMainData(id);
     })
   );
   const items = itemsMainData;
@@ -151,30 +157,30 @@ export const getItems = async () => {
   return items;
 };
 
-const getItemNames = async () => {
+const getItemsIds = async () => {
   const axiosResponse = await axiosInstance.get('/item', {
     params: {
       limit: 3000,
     },
   });
   const allData = axiosResponse.data;
-  const neededData = allData.results.map(({ name }) => name);
+  const neededData = allData.results.map(({ url }) => {
+    return extractIdFromUrl(url);
+  });
 
   return neededData;
 };
 
-const getItemMainData = async (itemName) => {
-  const axiosResponse = await axiosInstance.get(`/item/${itemName}`);
+const getItemMainData = async (itemId) => {
+  const axiosResponse = await axiosInstance.get(`/item/${itemId}`);
 
   const allData = axiosResponse.data;
   const neededData = {
     id: allData.id,
-    name: makeStringDisplayable(allData.name),
+    name: toReadableFormat(allData.name),
     price: determineProductPrice(allData, 'item'),
-    attributes: allData.attributes.map(({ name }) =>
-      makeStringDisplayable(name)
-    ),
-    category: makeStringDisplayable(allData.category.name),
+    attributes: allData.attributes.map(({ name }) => toReadableFormat(name)),
+    category: toReadableFormat(allData.category.name),
     sprites: [allData.sprites.default ?? '/unknown.png'],
     effect:
       allData.effectEntries.length > 0
@@ -281,8 +287,9 @@ export const getFilters = async () => {
           },
           {
             filterName: 'Games',
-            filteringComponent: 'select',
+            filteringComponent: 'checkbox-group',
             possibleValues: filtersArray[5],
+            maxChecks: filtersArray[5].length,
           },
         ],
       },
@@ -335,7 +342,8 @@ export const getFilters = async () => {
         groupName: 'Stats',
         definitions: filtersArray[7].map((statName) => {
           return {
-            filterName: statName,
+            filterName:
+              statName[0].toUpperCase() + statName.slice(1).toLowerCase(),
             lowerLimitInputName: `Min ${statName.toLowerCase()}`,
             upperLimitInputName: `Max ${statName.toLowerCase()}`,
             filteringComponent: 'range-input',
@@ -391,7 +399,7 @@ const getAvailableStats = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -405,7 +413,7 @@ const getAvailableHabitats = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -419,7 +427,7 @@ const getAvailableGenerations = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -433,7 +441,7 @@ const getAvailableColors = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -447,7 +455,7 @@ const getAvailableShapes = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -461,7 +469,7 @@ const getAvailableGrowthRate = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -475,7 +483,7 @@ const getAvailableGames = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -489,7 +497,7 @@ const getAvailableTypes = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -505,7 +513,7 @@ const getAvailableAttributes = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;
@@ -519,7 +527,7 @@ const getAvailableCategories = async () => {
   });
   const allData = axiosResponse.data;
   const neededData = allData.results.map(({ name }) => {
-    return makeStringDisplayable(name);
+    return toReadableFormat(name);
   });
 
   return neededData;

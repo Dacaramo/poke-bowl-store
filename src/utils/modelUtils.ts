@@ -1,6 +1,6 @@
 import { Product, ProductType } from '../model/Product';
 
-import { makeStringDisplayable } from './stringUtils';
+import { toReadableFormat } from './stringUtils';
 
 class UnknownProductError extends Error {
   constructor(
@@ -26,14 +26,14 @@ export const determineProductPrice = (
   type: ProductType
 ): number => {
   if (type === 'pokemon') {
-    return (product.baseExperience as number) * 1000;
+    return Math.round((product.baseExperience as number) * 1000);
   } else if (type === 'item') {
     if (product.name === 'master-ball') {
       return 10000;
     } else if (product.cost === 0) {
-      return Math.random() * 5000;
+      return Math.round(Math.random() * 5000);
     }
-    return product.cost as number;
+    return Math.round(product.cost as number);
   }
 
   throw new UnknownProductError();
@@ -41,48 +41,50 @@ export const determineProductPrice = (
 
 export const determinePokemonTypeColor = (pokemonType: string): string => {
   switch (pokemonType) {
-    case 'normal':
+    case 'Normal':
       return '#A8A878';
-    case 'fighting':
+    case 'Fighting':
       return '#C03028';
-    case 'flying':
+    case 'Flying':
       return '#A890F0';
-    case 'poison':
+    case 'Poison':
       return '#A040A0';
-    case 'ground':
+    case 'Ground':
       return '#E0C068';
-    case 'rock':
+    case 'Rock':
       return '#B8A038';
-    case 'bug':
+    case 'Bug':
       return '#A8B820';
-    case 'ghost':
+    case 'Ghost':
       return '#705898';
-    case 'steel':
+    case 'Steel':
       return '#B8B8D0';
-    case 'fire':
+    case 'Fire':
       return '#F08030';
-    case 'water':
+    case 'Water':
       return '#6890F0';
-    case 'grass':
+    case 'Grass':
       return '#78C850';
-    case 'electric':
+    case 'Electric':
       return '#F8D030';
-    case 'psychic':
+    case 'Psychic':
       return '#F85888';
-    case 'ice':
+    case 'Ice':
       return '#98D8D8';
-    case 'dragon':
+    case 'Dragon':
       return '#7038F8';
-    case 'dark':
+    case 'Dark':
       return '#705848';
-    case 'fairy':
+    case 'Fairy':
       return '#EE99AC';
-    case 'unknown':
+    case 'Unknown':
       return '#68A090';
-    case 'shadow':
+    case 'Shadow':
       return '#555555';
     default:
-      throw Error('Unknown pokemon type, unable to define the color');
+      throw Error(
+        `Unknown pokemon type [${pokemonType}], unable to define the color`
+      );
   }
 };
 
@@ -102,7 +104,7 @@ export const getArrayFromEvolutionChain = (
         species: { name: string };
       };
       if (current.species.name) {
-        levelNames.push(makeStringDisplayable(current.species.name));
+        levelNames.push(toReadableFormat(current.species.name));
       }
 
       if (current.evolvesTo) {
@@ -118,7 +120,7 @@ export const getArrayFromEvolutionChain = (
   return groupedNames;
 };
 
-export const extractPokemonIdFromUrl = (url: string): string => {
+export const extractIdFromUrl = (url: string): string => {
   const tokenizedUrl = url.split('/');
   return tokenizedUrl[tokenizedUrl.length - 2];
 };

@@ -7,7 +7,10 @@ import { ZINC_950 } from '../../../../../constants/colors';
 import { Item } from '../../../../../model/Item';
 import { Pokemon } from '../../../../../model/Pokemon';
 import { Product } from '../../../../../model/Product';
-import { determineProductType } from '../../../../../utils/modelUtils';
+import {
+  determinePokemonTypeColor,
+  determineProductType,
+} from '../../../../../utils/modelUtils';
 import { toPriceString } from '../../../../../utils/stringUtils';
 import { useStore } from '../../../../../zustand/store';
 import ImageCarrousel from '../../../../ImageCarrousel/ImageCarrousel';
@@ -38,7 +41,7 @@ const GridItem: FC<Props> = ({ product }) => {
     });
   };
 
-  const handleClickOnCartButton = (
+  const handleClickOnAddToCart = (
     e: ReactMouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
@@ -79,7 +82,7 @@ const GridItem: FC<Props> = ({ product }) => {
             <button
               type='button'
               className='w-[30px] h-[30px] flex justify-center items-center rounded-lg bg-zinc-100 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-500'
-              onClick={handleClickOnCartButton}
+              onClick={handleClickOnAddToCart}
             >
               {isAlreadyInCart ? (
                 <FontAwesomeIcon
@@ -102,11 +105,11 @@ const GridItem: FC<Props> = ({ product }) => {
             {(product as Pokemon).types.map((type) => {
               return (
                 <li
-                  key={type.name}
-                  style={{ backgroundColor: type.color }}
+                  key={type}
+                  style={{ backgroundColor: determinePokemonTypeColor(type) }}
                   className='ml-1 px-2 py-1 text-xs text-zinc-50 font-nunito font-bold rounded-lg'
                 >
-                  {type.name.toUpperCase()}
+                  {type.toUpperCase()}
                 </li>
               );
             })}

@@ -1,4 +1,4 @@
-export const makeStringDisplayable = (inputString: string): string => {
+export const toReadableFormat = (inputString: string): string => {
   if (inputString === 'generation-i') {
     return 'Generation I';
   } else if (inputString === 'generation-ii') {
@@ -40,4 +40,20 @@ export const toPriceString = (number: number): string => {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
   return parts.join('.');
+};
+
+export const toCodeFormat = (input: string): string => {
+  const cleanedInput = input.replace(/[^\w\s]/g, '');
+
+  const words = cleanedInput.split(' ');
+
+  const lowercaseWords = words.map((word) => word.toLowerCase());
+
+  const camelCase = lowercaseWords
+    .map((word, index) =>
+      index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join('');
+
+  return camelCase;
 };
