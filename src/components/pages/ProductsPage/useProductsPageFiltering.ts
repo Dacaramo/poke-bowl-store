@@ -14,15 +14,17 @@ export const useProductsPageFiltering = (
 ): ReturnedObject => {
   let filteredProducts = [...products] as Array<Pokemon> | Array<Item>;
 
+  console.log('@@@@@filterValues', filterValues);
+
   if ('Name' in filterValues) {
-    filteredProducts = products.filter((product) => {
+    filteredProducts = filteredProducts.filter((product) => {
       return product.name
         .toLowerCase()
         .includes(filterValues['Name'] as string);
     }) as Array<Pokemon> | Array<Item>;
   }
   if ('Min price' in filterValues) {
-    filteredProducts = products.filter((product) => {
+    filteredProducts = filteredProducts.filter((product) => {
       if (!product.price) {
         return false;
       }
@@ -30,7 +32,7 @@ export const useProductsPageFiltering = (
     }) as Array<Pokemon> | Array<Item>;
   }
   if ('Max price' in filterValues) {
-    filteredProducts = products.filter((product) => {
+    filteredProducts = filteredProducts.filter((product) => {
       if (!product.price) {
         return false;
       }
@@ -40,19 +42,19 @@ export const useProductsPageFiltering = (
 
   if (productType === 'pokemon') {
     if ('Types' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (filterValues['Types'] as Array<string>).every((type) => {
           return (product as Pokemon).types.includes(type);
         });
       }) as Array<Pokemon>;
     }
     if ('Rarity' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (product as Pokemon).rarity === filterValues['Rarity'];
       }) as Array<Pokemon>;
     }
     if ('Shape' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).shape) {
           return false;
         }
@@ -60,7 +62,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Color' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).color) {
           return false;
         }
@@ -68,7 +70,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Has gender differences?' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).hasGenderDifferences) {
           return false;
         }
@@ -76,7 +78,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Number of evolutions' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (
           (product as Pokemon).numberOfEvolutions ===
           filterValues['Number of evolutions']
@@ -84,12 +86,12 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Has branched evolutions' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (product as Pokemon).hasBranchedEvolutions;
       }) as Array<Pokemon>;
     }
     if ('Habitat' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).habitat) {
           return false;
         }
@@ -97,7 +99,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Generation' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).generation) {
           return false;
         }
@@ -105,14 +107,14 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Games' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (filterValues['Games'] as Array<string>).every((game) => {
           return (product as Pokemon).games.includes(game);
         });
       }) as Array<Pokemon>;
     }
     if ('Min weight' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).weight) {
           return false;
         }
@@ -122,7 +124,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max weight' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).weight) {
           return false;
         }
@@ -132,7 +134,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min height' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).height) {
           return false;
         }
@@ -142,7 +144,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max height' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).height) {
           return false;
         }
@@ -152,7 +154,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Growth rate' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).growthRate) {
           return false;
         }
@@ -160,7 +162,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min capture rate' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).captureRate) {
           return false;
         }
@@ -171,7 +173,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max capture rate' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).captureRate) {
           return false;
         }
@@ -182,7 +184,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min base experience' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).baseExperience) {
           return false;
         }
@@ -193,7 +195,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max base experience' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).baseExperience) {
           return false;
         }
@@ -204,7 +206,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min base happiness' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).baseHappiness) {
           return false;
         }
@@ -215,7 +217,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max base happiness' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         if (!(product as Pokemon).baseHappiness) {
           return false;
         }
@@ -226,7 +228,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min hp' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Hp';
         });
@@ -237,7 +239,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max hp' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Hp';
         });
@@ -248,7 +250,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min attack' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Attack';
         });
@@ -259,7 +261,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max attack' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Attack';
         });
@@ -270,7 +272,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min defense' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Defense';
         });
@@ -283,7 +285,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max defense' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Defense';
         });
@@ -296,7 +298,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min special attack' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Special attack';
         });
@@ -310,7 +312,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max special attack' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Special attack';
         });
@@ -324,7 +326,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min special defense' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Special defense';
         });
@@ -338,7 +340,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max special defense' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Special defense';
         });
@@ -352,7 +354,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min speed' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Speed';
         });
@@ -363,7 +365,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max speed' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Speed';
         });
@@ -374,7 +376,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min accuracy' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Accuracy';
         });
@@ -387,7 +389,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max accuracy' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Accuracy';
         });
@@ -400,7 +402,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Min evasion' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Evasion';
         });
@@ -413,7 +415,7 @@ export const useProductsPageFiltering = (
       }) as Array<Pokemon>;
     }
     if ('Max evasion' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         const searchedStat = (product as Pokemon).stats.find(({ name }) => {
           return name === 'Evasion';
         });
@@ -427,7 +429,7 @@ export const useProductsPageFiltering = (
     }
   } else if (productType === 'item') {
     if ('Attributes' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (filterValues['Attributes'] as Array<string>).every(
           (attribute) => {
             return (product as Item).attributes.includes(attribute);
@@ -436,7 +438,7 @@ export const useProductsPageFiltering = (
       }) as Array<Item>;
     }
     if ('Category' in filterValues) {
-      filteredProducts = products.filter((product) => {
+      filteredProducts = filteredProducts.filter((product) => {
         return (product as Item).category === filterValues['Category'];
       }) as Array<Item>;
     }

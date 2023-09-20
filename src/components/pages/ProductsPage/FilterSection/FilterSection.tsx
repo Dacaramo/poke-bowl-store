@@ -23,16 +23,19 @@ const FilterSection: FC<Props> = ({
   filterValues,
   setFilterValues,
 }) => {
-  const { handleChangeOnCheckboxGroup, handleChangeOnInputOrSelect } =
-    useFilterSectionHandlers(filterValues, setFilterValues);
+  const {
+    handleChangeOnCheckboxGroup,
+    handleChangeOnInputOrSelect,
+    handleClickOnResetFilters,
+  } = useFilterSectionHandlers(filterValues, setFilterValues);
 
   return (
     <form className='p-2 flex flex-col gap-2 items-start sm:w-[250px] sm:border sm:border-zinc-100'>
-      {filterDefinitionGroups.map((filterGroup) => {
+      {filterDefinitionGroups.map((filterGroup, i) => {
         return (
           <fieldset
             key={filterGroup.groupName}
-            className='w-[100%] flex flex-col items-start gap-2 border-t border-zinc-100'
+            className='w-[100%] p-1 flex flex-col items-start gap-2 border-t border-zinc-100'
           >
             <legend className='text-lg font-nunito font-bold'>
               {filterGroup.groupName}
@@ -179,6 +182,14 @@ const FilterSection: FC<Props> = ({
           </fieldset>
         );
       })}
+      <div className='w-[100%] h-[1px] border-b border-zinc-100' />
+      <button
+        type='button'
+        className='self-end w-[100%] px-2 py-1 rounded-lg text-md font-bold font-nunito bg-zinc-100 hover:bg-gradient-to-r from-cyan-500 to-blue-500'
+        onClick={handleClickOnResetFilters}
+      >
+        Reset filters
+      </button>
     </form>
   );
 };

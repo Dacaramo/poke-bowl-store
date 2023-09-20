@@ -13,6 +13,7 @@ interface ReturnedObject {
     filterName: string,
     isNumberInput?: boolean
   ) => void;
+  handleClickOnResetFilters: () => void;
 }
 
 export const useFilterSectionHandlers = (
@@ -68,8 +69,13 @@ export const useFilterSectionHandlers = (
     }
   };
 
+  const handleClickOnResetFilters = () => {
+    setFilterValues({});
+  };
+
   return {
     handleChangeOnCheckboxGroup,
     handleChangeOnInputOrSelect,
+    handleClickOnResetFilters,
   };
 };
