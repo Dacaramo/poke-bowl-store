@@ -17,9 +17,9 @@ const Root: FC<Props> = () => {
 
   return (
     <>
-      <header className='px-6 py-2 flex flex-row justify-between items-center gap-4'>
+      <header className='h-[10vh] px-6 flex flex-row justify-between items-center gap-4'>
         <img
-          className='cursor-pointer'
+          className='w-[125px] sm:w-auto cursor-pointer'
           src='/logo.png'
           alt='logo'
           onClick={() => navigate('/poke-bowl-store/')}
@@ -43,7 +43,7 @@ const Root: FC<Props> = () => {
           </button>
         )}
       </header>
-      <main className='px-6 py-2'>
+      <main className='min-h-[90vh] px-4 py-2'>
         <Outlet />
       </main>
     </>

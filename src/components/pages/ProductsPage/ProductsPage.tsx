@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { ClipLoader } from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +10,14 @@ import {
   getItems,
   getPokemons,
 } from '../../../axios/axiosRequestSenders';
-import { ZINC_300, ZINC_950 } from '../../../constants/colors';
+import {
+  CYAN_400,
+  WHITE,
+  ZINC_50,
+  ZINC_100,
+  ZINC_300,
+  ZINC_950,
+} from '../../../constants/colors';
 import { FilterDefinitionGroup, FilterValue } from '../../../model/Filter';
 import { Item } from '../../../model/Item';
 import { Pokemon } from '../../../model/Pokemon';
@@ -89,10 +96,15 @@ const ProductsPage: FC<Props> = () => {
   return (
     <>
       {isSomethingLoading ? (
-        <ClipLoader
-          color={ZINC_300}
-          size={150}
-        />
+        <div className='w-full h-[100%] flex justify-center items-center'>
+          <div className='p-4 flex flex-col gap-2 items-center rounded-lg bg-zinc-100'>
+            <BeatLoader
+              color={CYAN_400}
+              size={20}
+            />
+            <p className='text-lg font-nunito font-bold'>Loading products</p>
+          </div>
+        </div>
       ) : (
         <div className='w-[100%] flex flex-col gap-4 items-start'>
           <div className='self-center flex flex-row gap-4'>
@@ -149,10 +161,12 @@ const ProductsPage: FC<Props> = () => {
                 setFilterValues={setFilterValues}
               />
             )}
-            <Grid products={paginatedProducts} />
+            <div className='flex-1'>
+              <Grid products={paginatedProducts} />
+            </div>
           </div>
           <ReactPaginate
-            className='p-5 self-center flex flex-row gap-2'
+            className=' self-center p-5 flex flex-row gap-2 justify-center'
             nextLinkClassName={paginationButtonClasses}
             pageLinkClassName={paginationButtonClasses}
             previousLinkClassName={paginationButtonClasses}

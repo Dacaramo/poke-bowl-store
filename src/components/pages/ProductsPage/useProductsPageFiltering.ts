@@ -14,8 +14,6 @@ export const useProductsPageFiltering = (
 ): ReturnedObject => {
   let filteredProducts = [...products] as Array<Pokemon> | Array<Item>;
 
-  console.log('@@@@@filterValues', filterValues);
-
   if ('Name' in filterValues) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.name

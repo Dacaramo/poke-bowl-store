@@ -16,12 +16,13 @@ export const useProductsPagePagination = (
 ): ReturnedObject => {
   const [resultsOffset, setResultsOffset] = useState<number>(0);
 
-  const resultsPerPage = 30;
+  const resultsPerPage = 40;
   const endOffset = resultsOffset + resultsPerPage;
   const paginatedProducts = products?.slice(resultsOffset, endOffset) ?? [];
   const pageCount = Math.ceil(products.length / resultsPerPage);
 
   const handleClickOnPage = (e: { selected: number }) => {
+    document.documentElement.scrollTop = 0;
     const newOffset = (e.selected * resultsPerPage) % (products?.length ?? 1);
     setResultsOffset(newOffset);
   };

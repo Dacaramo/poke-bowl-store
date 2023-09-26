@@ -3,16 +3,23 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ZINC_100, ZINC_300 } from '../../constants/colors';
+import { ProductType } from '../../model/Product';
 
 interface Props {
+  size: 'sm' | 'lg';
   imageUrls: Array<string>;
+  productType: ProductType;
 }
 
-const ImageCarrousel: FC<Props> = ({ imageUrls }) => {
+const ImageCarrousel: FC<Props> = ({ size, imageUrls, productType }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const iconSize = 'xl';
+  const iconSize = size === 'sm' ? 'xl' : '2xl';
   const iconColor = ZINC_300;
+  const imageClasses =
+    size === 'sm'
+      ? 'w-[175px] h-[175px] object-contain'
+      : 'w-[175px] h-[175px] sm:w-[500px] sm:h-auto object-contain';
 
   const handleClickOnLeft = (e: ReactMouseEvent) => {
     e.stopPropagation();
@@ -36,8 +43,8 @@ const ImageCarrousel: FC<Props> = ({ imageUrls }) => {
   };
 
   return (
-    <div className='w-[100%] flex flex-col gap-2 items-center'>
-      <div className='w-[100%] flex flex-row justify-around items-center'>
+    <div className='w-[100%] flex flex-col gap-5 items-center rounded-lg'>
+      <div className='w-[100%] flex flex-row justify-around items-center gap-5'>
         <button
           type='button'
           style={{ opacity: currentIndex - 1 >= 0 ? 1 : 0 }}
@@ -50,7 +57,7 @@ const ImageCarrousel: FC<Props> = ({ imageUrls }) => {
           />
         </button>
         <img
-          className='w-[175px] h-[175px]'
+          className={imageClasses}
           src={imageUrls[currentIndex]}
           alt=''
         />

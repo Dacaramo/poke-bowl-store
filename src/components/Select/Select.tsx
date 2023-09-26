@@ -14,6 +14,7 @@ interface Props {
   value: string;
   isNoneOptionAllowed?: boolean;
   onChange: (value: string) => void;
+  width: 'sm' | 'lg';
 }
 
 const Select: FC<Props> = ({
@@ -24,6 +25,7 @@ const Select: FC<Props> = ({
   value,
   isNoneOptionAllowed = true,
   onChange: handleClickOnListItemCallback,
+  width,
 }) => {
   const [areOptionsVisible, setAreOptionsVisible] = useState<boolean>(false);
 
@@ -34,6 +36,7 @@ const Select: FC<Props> = ({
 
   const liClasses =
     'w-[100%] px-3 py-1 text-md bg-zinc-100 text-zinc-950 font-nunito font-light cursor-pointer hover:bg-zinc-300 hover:font-bold';
+  const widthClasses = width === 'sm' ? 'w-[55px]' : 'w-[175px]';
 
   const handleButtonClick = () => {
     setAreOptionsVisible((prev) => !prev);
@@ -90,7 +93,7 @@ const Select: FC<Props> = ({
         ref={buttonRef}
         type='button'
         id={id}
-        className='w-[200px] h-[30px] px-3 flex flex-row justify-start items-center bg-zinc-100 text-zinc-950 text-md rounded-lg font-nunito font-light'
+        className={`${widthClasses} h-[100%] min-h-[30px] px-3 flex flex-row justify-start items-center bg-zinc-100 text-zinc-950 text-md rounded-lg font-nunito font-light`}
         onClick={handleButtonClick}
       >
         {value}

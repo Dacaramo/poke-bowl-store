@@ -1,8 +1,15 @@
 export const ZINC_950 = '#09090b';
+export const WHITE = '#FFFFFF';
 export const ZINC_50 = '#fafafa';
 export const ZINC_100 = '#f4f4f5';
 export const ZINC_300 = '#d4d4d8';
 export const CYAN_400 = '#22d3ee';
-export const ORANGE_500 = '#f97316';
+export const BLUE_500 = '#3b82f6';
+export const CYAN_500 = '#06b6d4';
 export const GREEN_200 = '#bbf7d0';
 export const RED_200 = '#fecaca';
+export const RED_600 = '#dc2626';
+export const ORANGE_500 = '#f97316';
+export const YELLOW_400 = '#facc15';
+export const LIME_400 = '#a3e635';
+export const GREEN_500 = '#22c55e';

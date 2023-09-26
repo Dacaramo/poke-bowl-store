@@ -17,9 +17,15 @@ import ImageCarrousel from '../../../../ImageCarrousel/ImageCarrousel';
 
 interface Props {
   product: Product;
+  onMouseEnter: () => void;
+  evolutionMap?: Record<string, Pokemon>;
 }
 
-const GridItem: FC<Props> = ({ product }) => {
+const GridItem: FC<Props> = ({
+  product,
+  onMouseEnter: handleMouseEnter,
+  evolutionMap,
+}) => {
   const navigate = useNavigate();
   const [cartProducts, addToCart, removeFromCart] = useStore((state) => {
     return [state.cartProducts, state.addToCart, state.removeFromCart];
@@ -37,6 +43,7 @@ const GridItem: FC<Props> = ({ product }) => {
       state: {
         product,
         productType,
+        evolutionMap,
       },
     });
   };
@@ -59,10 +66,15 @@ const GridItem: FC<Props> = ({ product }) => {
 
   return (
     <li
-      className='flex-col justify-center items-center p-2 border border-zinc-100 cursor-pointer'
+      className='flex flex-col justify-center items-center p-2 border border-zinc-100 cursor-pointer'
       onClick={handleClickOnListItem}
+      onMouseEnter={handleMouseEnter}
     >
-      <ImageCarrousel imageUrls={product.sprites} />
+      <ImageCarrousel
+        size='sm'
+        imageUrls={product.sprites}
+        productType={productType}
+      />
       <div className='w-[100%] flex-col items-start'>
         <div className='w-[100%] flex flex-row justify-between items-center'>
           <div className='flex flex-col'>
@@ -115,7 +127,6 @@ const GridItem: FC<Props> = ({ product }) => {
             })}
           </ul>
         )}
-        {productType === 'item' && <p>{(product as Item).effect}</p>}
       </div>
     </li>
   );

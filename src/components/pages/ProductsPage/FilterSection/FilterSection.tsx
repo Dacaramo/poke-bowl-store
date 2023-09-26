@@ -155,6 +155,7 @@ const FilterSection: FC<Props> = ({
                   return (
                     <Select
                       key={definition.filterName}
+                      width='lg'
                       id={definition.filterName}
                       label={definition.filterName}
                       isLabelHidden={false}

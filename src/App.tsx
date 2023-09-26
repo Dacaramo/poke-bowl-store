@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import CartPage from './components/pages/CartPage/CartPage';
+import ProductPage from './components/pages/ProductPage/ProductPage';
 import ProductsPage from './components/pages/ProductsPage/ProductsPage';
 import Root from './components/Root/Root';
 
@@ -24,7 +25,10 @@ const router = createBrowserRouter(
         path='poke-bowl-store/cart'
         element={<CartPage />}
       />
-      <Route path='/poke-bowl-store/product/:productName' />
+      <Route
+        path='/poke-bowl-store/product/:productName'
+        element={<ProductPage />}
+      />
       <Route path='/poke-bowl-store/*' />
     </Route>
   )

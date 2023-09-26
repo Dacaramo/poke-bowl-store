@@ -54,6 +54,18 @@ const getPokemonsIds = async () => {
 const getPokemonMainData = async (pokemonId) => {
   const axiosResponse = await axiosInstance.get(`/pokemon/${pokemonId}`);
   const allData = axiosResponse.data;
+
+  const sprites = [
+    allData.sprites.other.dreamWorld.frontDefault,
+    allData.sprites.other.dreamWorld.frontFemale,
+    allData.sprites.other.home.frontDefault,
+    allData.sprites.other.home.frontFemale,
+    allData.sprites.other.home.frontShiny,
+    allData.sprites.other.home.frontShinyFemale,
+    allData.sprites.other.officialArtwork.frontDefault,
+    allData.sprites.other.officialArtwork.frontShiny,
+  ].filter((val) => val !== null);
+
   const neededData = {
     id: allData.id,
     price: allData.baseExperience
@@ -67,16 +79,7 @@ const getPokemonMainData = async (pokemonId) => {
     games: allData.gameIndices.map((val) => {
       return toReadableFormat(val.version.name);
     }),
-    sprites: [
-      allData.sprites.other.dreamWorld.frontDefault,
-      allData.sprites.other.dreamWorld.frontFemale,
-      allData.sprites.other.home.frontDefault,
-      allData.sprites.other.home.frontFemale,
-      allData.sprites.other.home.frontShiny,
-      allData.sprites.other.home.frontShinyFemale,
-      allData.sprites.other.officialArtwork.frontDefault,
-      allData.sprites.other.officialArtwork.frontShiny,
-    ].filter((val) => val !== null),
+    sprites: sprites.length > 0 ? sprites : ['/unknownPokemon.png'],
     stats: allData.stats.map((val) => {
       return {
         name: (
@@ -181,7 +184,7 @@ const getItemMainData = async (itemId) => {
     price: determineProductPrice(allData, 'item'),
     attributes: allData.attributes.map(({ name }) => toReadableFormat(name)),
     category: toReadableFormat(allData.category.name),
-    sprites: [allData.sprites.default ?? '/unknown.png'],
+    sprites: [allData.sprites.default ?? '/unknownItem.png'],
     effect:
       allData.effectEntries.length > 0
         ? allData.effectEntries[0].shortEffect
