@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import logo from '../../assets/images/logo.png';
 import { ZINC_950 } from '../../constants/colors';
 import { useStore } from '../../zustand/store';
 
@@ -20,7 +21,7 @@ const Root: FC<Props> = () => {
       <header className='h-[10vh] px-6 flex flex-row justify-between items-center gap-4'>
         <img
           className='w-[125px] sm:w-auto cursor-pointer'
-          src='/logo.png'
+          src={logo}
           alt='logo'
           onClick={() => navigate('/poke-bowl-store/')}
         />

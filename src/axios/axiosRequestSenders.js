@@ -13,6 +13,9 @@ import {
 
 import { axiosInstance } from './axiosConfig';
 
+import unknownPokemon from '../assets/images/unknownPokemon.png';
+import unknownItem from '../assets/images/unknownItem.png';
+
 /* POKEMONS RELATED REQUEST SENDERS */
 
 export const getPokemons = async () => {
@@ -79,7 +82,7 @@ const getPokemonMainData = async (pokemonId) => {
     games: allData.gameIndices.map((val) => {
       return toReadableFormat(val.version.name);
     }),
-    sprites: sprites.length > 0 ? sprites : ['/unknownPokemon.png'],
+    sprites: sprites.length > 0 ? sprites : [unknownPokemon],
     stats: allData.stats.map((val) => {
       return {
         name: (
@@ -184,7 +187,7 @@ const getItemMainData = async (itemId) => {
     price: determineProductPrice(allData, 'item'),
     attributes: allData.attributes.map(({ name }) => toReadableFormat(name)),
     category: toReadableFormat(allData.category.name),
-    sprites: [allData.sprites.default ?? '/unknownItem.png'],
+    sprites: [allData.sprites.default ?? unknownItem],
     effect:
       allData.effectEntries.length > 0
         ? allData.effectEntries[0].shortEffect
