@@ -88,7 +88,7 @@ const ProductsPage: FC<Props> = () => {
   const buttonTextClasses = 'text-xl font-bold font-nunito';
   const selectedButtonClasses = `${buttonTextClasses} from-cyan-500 to-blue-500 bg-gradient-to-r bg-clip-text text-transparent`;
   const unselectedButtonClasses = `${buttonTextClasses} text-zinc-950`;
-  const paginationButtonClasses = `p-1 text-sm font-light font-nunito sm:text-xl sm:font-nunito sm:px-2 sm:py-1 hover:bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg`;
+  const paginationButtonClasses = `p-2 text-sm font-light font-nunito sm:text-xl sm:font-nunito sm:px-2 sm:py-1 hover:bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg`;
 
   const handleClickOnFiltersButton = () => {
     setIsFilterSectionCollapsed((prev) => !prev);
@@ -183,7 +183,7 @@ const ProductsPage: FC<Props> = () => {
             </div>
           </div>
           <ReactPaginate
-            className=' self-center p-5 flex flex-row gap-2 justify-center'
+            className=' self-center px-2 py-5 flex flex-row gap-1 justify-center'
             nextLinkClassName={paginationButtonClasses}
             pageLinkClassName={paginationButtonClasses}
             previousLinkClassName={paginationButtonClasses}
@@ -194,7 +194,7 @@ const ProductsPage: FC<Props> = () => {
             breakLabel='...'
             nextLabel='Next'
             onPageChange={handleClickOnPage}
-            pageRangeDisplayed={5}
+            pageRangeDisplayed={3}
             marginPagesDisplayed={1}
             forcePage={forcePage}
             pageCount={pageCount}

@@ -4,7 +4,6 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ZINC_950 } from '../../../../../constants/colors';
-import { Item } from '../../../../../model/Item';
 import { Pokemon } from '../../../../../model/Pokemon';
 import { Product } from '../../../../../model/Product';
 import {
@@ -69,6 +68,7 @@ const GridItem: FC<Props> = ({
       className='flex flex-col justify-center items-center p-2 border border-zinc-100 cursor-pointer'
       onClick={handleClickOnListItem}
       onMouseEnter={handleMouseEnter}
+      onTouchStart={handleMouseEnter}
     >
       <ImageCarrousel
         size='sm'

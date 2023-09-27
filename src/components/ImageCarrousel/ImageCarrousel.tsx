@@ -11,7 +11,7 @@ interface Props {
   productType: ProductType;
 }
 
-const ImageCarrousel: FC<Props> = ({ size, imageUrls, productType }) => {
+const ImageCarrousel: FC<Props> = ({ size, imageUrls }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const iconSize = size === 'sm' ? 'xl' : '2xl';

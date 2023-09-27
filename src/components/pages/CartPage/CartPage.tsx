@@ -17,7 +17,6 @@ const CartPage: FC<Props> = () => {
   const pricesBeforeTax = cartProducts.map((cartProduct) => {
     return cartProduct.product.price! * cartProduct.quantity;
   });
-  const pricesAfterTax = pricesBeforeTax.map((price) => price * tax);
   const subTotal = pricesBeforeTax.reduce((acc, current) => {
     acc += current;
     return acc;

@@ -33,7 +33,7 @@ const FilterSection: FC<Props> = ({
 
   return (
     <form className='p-2 flex flex-col gap-2 items-start sm:w-[250px] sm:border sm:border-zinc-100'>
-      {filterDefinitionGroups.map((filterGroup, i) => {
+      {filterDefinitionGroups.map((filterGroup) => {
         return (
           <fieldset
             key={filterGroup.groupName}

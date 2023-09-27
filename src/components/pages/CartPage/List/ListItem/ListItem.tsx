@@ -1,9 +1,5 @@
 import { FC, memo } from 'react';
-import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import { faRemove } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ZINC_950 } from '../../../../../constants/colors';
 import { CartProduct, Product } from '../../../../../model/Product';
 import { toPriceString } from '../../../../../utils/stringUtils';
 import { useStore } from '../../../../../zustand/store';
