@@ -6,6 +6,12 @@ export default {
       fontFamily: {
         nunito: ['Nunito', 'sans-serif'],
       },
+      dropShadow: {
+        above: '0 -1px 3px rgba(0, 0, 0, 0.1)',
+      },
+      backgroundColor: {
+        white: '#FFFFFF',
+      },
     },
   },
   plugins: [],

@@ -22,7 +22,7 @@ const router = createBrowserRouter(
         element={<ProductsPage />}
       />
       <Route
-        path='poke-bowl-store/cart'
+        path='/poke-bowl-store/cart'
         element={<CartPage />}
       />
       <Route

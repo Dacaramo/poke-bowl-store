@@ -37,6 +37,7 @@ const Select: FC<Props> = ({
   const liClasses =
     'w-[100%] px-3 py-1 text-md bg-zinc-100 text-zinc-950 font-nunito font-light cursor-pointer hover:bg-zinc-300 hover:font-bold';
   const widthClasses = width === 'sm' ? 'w-[55px]' : 'w-[175px]';
+  const labelClasses = width === 'sm' ? 'ml-0' : 'ml-3';
 
   const handleButtonClick = () => {
     setAreOptionsVisible((prev) => !prev);
@@ -84,7 +85,7 @@ const Select: FC<Props> = ({
       {!isLabelHidden && (
         <label
           htmlFor={id}
-          className='ml-3 text-md font-nunito font-light text-zinc-950'
+          className={`${labelClasses} ml-3 text-md font-nunito font-light text-zinc-950`}
         >
           {label}
         </label>
