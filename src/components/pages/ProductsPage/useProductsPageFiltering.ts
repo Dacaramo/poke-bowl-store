@@ -79,11 +79,11 @@ export const useProductsPageFiltering = (
       filteredProducts = filteredProducts.filter((product) => {
         return (
           (product as Pokemon).numberOfEvolutions ===
-          filterValues['Number of evolutions']
+          parseInt(filterValues['Number of evolutions'] as string)
         );
       }) as Array<Pokemon>;
     }
-    if ('Has branched evolutions' in filterValues) {
+    if ('Has branched evolutions?' in filterValues) {
       filteredProducts = filteredProducts.filter((product) => {
         return (product as Pokemon).hasBranchedEvolutions;
       }) as Array<Pokemon>;

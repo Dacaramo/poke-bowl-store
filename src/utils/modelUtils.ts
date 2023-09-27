@@ -29,7 +29,7 @@ export const determineProductPrice = (
     return Math.round((product.baseExperience as number) * 1000);
   } else if (type === 'item') {
     if (product.name === 'master-ball') {
-      return 10000;
+      return 150000;
     } else if (product.cost === 0) {
       return Math.round(Math.random() * 5000);
     }

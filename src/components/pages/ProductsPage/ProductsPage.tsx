@@ -10,14 +10,7 @@ import {
   getItems,
   getPokemons,
 } from '../../../axios/axiosRequestSenders';
-import {
-  CYAN_400,
-  WHITE,
-  ZINC_50,
-  ZINC_100,
-  ZINC_300,
-  ZINC_950,
-} from '../../../constants/colors';
+import { CYAN_400, ZINC_950 } from '../../../constants/colors';
 import { FilterDefinitionGroup, FilterValue } from '../../../model/Filter';
 import { Item } from '../../../model/Item';
 import { Pokemon } from '../../../model/Pokemon';
@@ -31,11 +24,18 @@ import { useProductsPagePagination } from './useProductsPagePagination';
 interface Props {}
 
 const ProductsPage: FC<Props> = () => {
-  const [productType, setProductType] = useState<ProductType>('pokemon');
+  const [productType, setProductType] = useState<ProductType>(
+    (localStorage.getItem('productType') as ProductType) ?? 'pokemon'
+  );
   const [isFilterSectionCollapsed, setIsFilterSectionCollapsed] =
     useState<boolean>(false);
   const [filterValues, setFilterValues] = useState<Record<string, FilterValue>>(
-    {}
+    localStorage.getItem('filterValues')
+      ? (JSON.parse(localStorage.getItem('filterValues')!) as Record<
+          string,
+          FilterValue
+        >)
+      : {}
   );
 
   const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
@@ -77,8 +77,13 @@ const ProductsPage: FC<Props> = () => {
     productType,
     filterValues
   );
-  const { paginatedProducts, pageCount, handleClickOnPage } =
-    useProductsPagePagination(filteredProducts, productType);
+  const {
+    paginatedProducts,
+    pageCount,
+    forcePage,
+    handleClickOnPage,
+    setResultsOffset,
+  } = useProductsPagePagination(filteredProducts);
 
   const buttonTextClasses = 'text-xl font-bold font-nunito';
   const selectedButtonClasses = `${buttonTextClasses} from-cyan-500 to-blue-500 bg-gradient-to-r bg-clip-text text-transparent`;
@@ -89,8 +94,18 @@ const ProductsPage: FC<Props> = () => {
     setIsFilterSectionCollapsed((prev) => !prev);
   };
 
-  useEffect(() => {
+  const handleClickOnProductTypeButton = (type: ProductType) => {
+    setProductType(type);
+    setResultsOffset(0);
     setFilterValues({});
+  };
+
+  useEffect(() => {
+    localStorage.setItem('filterValues', JSON.stringify(filterValues));
+  }, [filterValues]);
+
+  useEffect(() => {
+    localStorage.setItem('productType', productType);
   }, [productType]);
 
   return (
@@ -115,7 +130,7 @@ const ProductsPage: FC<Props> = () => {
                   ? selectedButtonClasses
                   : unselectedButtonClasses
               }`}
-              onClick={() => setProductType('pokemon')}
+              onClick={() => handleClickOnProductTypeButton('pokemon')}
             >
               Pokemons
             </button>
@@ -126,7 +141,7 @@ const ProductsPage: FC<Props> = () => {
                   ? selectedButtonClasses
                   : unselectedButtonClasses
               }`}
-              onClick={() => setProductType('item')}
+              onClick={() => handleClickOnProductTypeButton('item')}
             >
               Items
             </button>
@@ -159,6 +174,7 @@ const ProductsPage: FC<Props> = () => {
                 filterDefinitionGroups={filterDefinitionGroups![productType]}
                 filterValues={filterValues}
                 setFilterValues={setFilterValues}
+                setResultsOffset={setResultsOffset}
               />
             )}
             <div className='flex-1'>
@@ -179,6 +195,7 @@ const ProductsPage: FC<Props> = () => {
             onPageChange={handleClickOnPage}
             pageRangeDisplayed={5}
             marginPagesDisplayed={1}
+            forcePage={forcePage}
             pageCount={pageCount}
             previousLabel='Prev'
             renderOnZeroPageCount={null}

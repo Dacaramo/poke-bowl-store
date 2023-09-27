@@ -30,8 +30,8 @@ const ProductPage: FC<Props> = () => {
   const navigate = useNavigate();
   const evolutionStepId = useId();
   const evolutionId = useId();
-  const [cartProducts, addToCart, removeFromCart] = useStore((state) => {
-    return [state.cartProducts, state.addToCart, state.removeFromCart];
+  const [cartProducts, addToCart] = useStore((state) => {
+    return [state.cartProducts, state.addToCart];
   });
 
   const state = location.state as {

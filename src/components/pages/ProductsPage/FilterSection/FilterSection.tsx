@@ -16,18 +16,20 @@ interface Props {
   filterDefinitionGroups: Array<FilterDefinitionGroup>;
   filterValues: Record<string, FilterValue>;
   setFilterValues: Dispatch<SetStateAction<Record<string, FilterValue>>>;
+  setResultsOffset: Dispatch<SetStateAction<number>>;
 }
 
 const FilterSection: FC<Props> = ({
   filterDefinitionGroups,
   filterValues,
   setFilterValues,
+  setResultsOffset,
 }) => {
   const {
     handleChangeOnCheckboxGroup,
     handleChangeOnInputOrSelect,
     handleClickOnResetFilters,
-  } = useFilterSectionHandlers(filterValues, setFilterValues);
+  } = useFilterSectionHandlers(filterValues, setFilterValues, setResultsOffset);
 
   return (
     <form className='p-2 flex flex-col gap-2 items-start sm:w-[250px] sm:border sm:border-zinc-100'>

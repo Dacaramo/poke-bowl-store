@@ -31,7 +31,7 @@ const TypeableInput: FC<Props> = ({
   isLabelHidden,
   onChange: handleChange,
 }) => {
-  const numericKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const numericKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
   const actionKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
   let inputClasses =
     'rounded-lg font-nunito font-light text-zinc-950 placeholder-zinc-300 bg-zinc-100 focus:outline-none ';

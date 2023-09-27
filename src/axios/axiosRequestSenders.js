@@ -288,12 +288,12 @@ export const getFilters = async () => {
             filteringComponent: 'select',
             possibleValues: filtersArray[4],
           },
-          {
-            filterName: 'Games',
-            filteringComponent: 'checkbox-group',
-            possibleValues: filtersArray[5],
-            maxChecks: filtersArray[5].length,
-          },
+          // {
+          //   filterName: 'Games',
+          //   filteringComponent: 'checkbox-group',
+          //   possibleValues: filtersArray[5],
+          //   maxChecks: filtersArray[5].length,
+          // },
         ],
       },
       {

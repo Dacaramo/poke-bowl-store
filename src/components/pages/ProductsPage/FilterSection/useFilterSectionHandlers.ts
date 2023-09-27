@@ -18,7 +18,8 @@ interface ReturnedObject {
 
 export const useFilterSectionHandlers = (
   filterValues: Record<string, FilterValue>,
-  setFilterValues: Dispatch<SetStateAction<Record<string, FilterValue>>>
+  setFilterValues: Dispatch<SetStateAction<Record<string, FilterValue>>>,
+  setResultsOffset: Dispatch<SetStateAction<number>>
 ): ReturnedObject => {
   const handleChangeOnCheckboxGroup = (
     value: string,
@@ -50,6 +51,8 @@ export const useFilterSectionHandlers = (
         });
       }
     }
+
+    setResultsOffset(0);
   };
 
   const handleChangeOnInputOrSelect = (
@@ -67,6 +70,8 @@ export const useFilterSectionHandlers = (
         [filterName]: isNumberInput ? parseInt(value) : value,
       });
     }
+
+    setResultsOffset(0);
   };
 
   const handleClickOnResetFilters = () => {

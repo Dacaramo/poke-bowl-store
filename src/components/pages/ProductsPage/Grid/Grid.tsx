@@ -55,7 +55,7 @@ const Grid: FC<Props> = ({ products }) => {
         </ul>
       ) : (
         <p className='ml-5 font-nunito font-bold text-zinc-950 text-lg'>
-          Theres no results for your search
+          There is no results for your search
         </p>
       )}
     </>
