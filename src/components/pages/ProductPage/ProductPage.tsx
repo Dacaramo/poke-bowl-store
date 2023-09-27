@@ -365,7 +365,7 @@ const ProductPage: FC<Props> = () => {
                   <p className={pClasses}>Unknown data</p>
                 )}
               </section>
-              <section className={`max-w-[350px] ${sectionClasses}`}>
+              <section className={`sm:max-w-[350px] ${sectionClasses}`}>
                 <h2 className={h2Classes}>Notes</h2>
                 <ul className={'self-center w-[200px] sm:w-[275px]'}>
                   <li className={liClasses}>
