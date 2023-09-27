@@ -7,10 +7,11 @@ import { determineProductType } from '../../../../utils/modelUtils';
 import GridItem from './GridItem/GridItem';
 
 interface Props {
-  products: Array<Product>;
+  displayProducts: Array<Product>;
+  allProducts: Array<Product>;
 }
 
-const Grid: FC<Props> = ({ products }) => {
+const Grid: FC<Props> = ({ displayProducts, allProducts }) => {
   const [evolutionMap, setEvolutionMap] = useState<
     Record<string, Pokemon> | undefined
   >(undefined);
@@ -23,7 +24,7 @@ const Grid: FC<Props> = ({ products }) => {
             names.forEach((name) => {
               acc = {
                 ...acc,
-                [name]: (products as Array<Pokemon>).find(
+                [name]: (allProducts as Array<Pokemon>).find(
                   (pokemon: Pokemon) => {
                     return pokemon.name === name;
                   }
@@ -40,9 +41,9 @@ const Grid: FC<Props> = ({ products }) => {
 
   return (
     <>
-      {products.length > 0 ? (
+      {displayProducts.length > 0 ? (
         <ul className='flex-1 grid grid-cols-[repeat(auto-fill,minmax(275px,1fr))] grid-rows-[repeat(auto-fill,minmax(300px,1fr))] gap-5'>
-          {products?.map((product) => {
+          {displayProducts?.map((product) => {
             return (
               <GridItem
                 key={product.id}

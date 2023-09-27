@@ -96,22 +96,20 @@ const ProductsPage: FC<Props> = () => {
 
   const handleClickOnProductTypeButton = (type: ProductType) => {
     setProductType(type);
-    setResultsOffset(0);
     setFilterValues({});
+    setResultsOffset(0);
+    localStorage.setItem('resultsOffset', '0');
   };
 
   useEffect(() => {
-    localStorage.setItem('filterValues', JSON.stringify(filterValues));
-  }, [filterValues]);
-
-  useEffect(() => {
     localStorage.setItem('productType', productType);
-  }, [productType]);
+    localStorage.setItem('filterValues', JSON.stringify(filterValues));
+  }, [productType, filterValues]);
 
   return (
     <>
       {isSomethingLoading ? (
-        <div className='w-full h-[100%] flex justify-center items-center'>
+        <div className='w-full h-[87.5vh] flex justify-center items-center'>
           <div className='p-4 flex flex-col gap-2 items-center rounded-lg bg-zinc-100'>
             <BeatLoader
               color={CYAN_400}
@@ -178,7 +176,10 @@ const ProductsPage: FC<Props> = () => {
               />
             )}
             <div className='flex-1'>
-              <Grid products={paginatedProducts} />
+              <Grid
+                displayProducts={paginatedProducts}
+                allProducts={products}
+              />
             </div>
           </div>
           <ReactPaginate
