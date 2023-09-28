@@ -15,6 +15,7 @@ import { FilterDefinitionGroup, FilterValue } from '../../../model/Filter';
 import { Item } from '../../../model/Item';
 import { Pokemon } from '../../../model/Pokemon';
 import { ProductType } from '../../../model/Product';
+import { useStore } from '../../../zustand/store';
 
 import FilterSection from './FilterSection/FilterSection';
 import Grid from './Grid/Grid';
@@ -37,7 +38,6 @@ const ProductsPage: FC<Props> = () => {
         >)
       : {}
   );
-  const [secondsCount, setSecondsCount] = useState<number>(8);
 
   const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
     queryKey: ['pokemons'],
@@ -61,6 +61,9 @@ const ProductsPage: FC<Props> = () => {
         }>;
       },
     });
+  const [secondsCount, decrementSecondsCount] = useStore((state) => {
+    return [state.secondsCount, state.decrementSecondsCount];
+  });
 
   const isSomethingLoading =
     areFiltersLoading || arePokemonsLoading || areItemsLoading;
@@ -110,7 +113,7 @@ const ProductsPage: FC<Props> = () => {
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       if (secondsCount > 0) {
-        setSecondsCount(secondsCount - 1);
+        decrementSecondsCount();
       }
     }, 1000);
 
