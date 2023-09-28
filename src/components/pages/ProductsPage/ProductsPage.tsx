@@ -37,6 +37,7 @@ const ProductsPage: FC<Props> = () => {
         >)
       : {}
   );
+  const [secondsCount, setSecondsCount] = useState<number>(8);
 
   const { data: pokemons, isLoading: arePokemonsLoading } = useQuery({
     queryKey: ['pokemons'],
@@ -106,16 +107,28 @@ const ProductsPage: FC<Props> = () => {
     localStorage.setItem('filterValues', JSON.stringify(filterValues));
   }, [productType, filterValues]);
 
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      if (secondsCount > 0) {
+        setSecondsCount(secondsCount - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [secondsCount]);
+
   return (
     <>
-      {isSomethingLoading ? (
+      {isSomethingLoading || secondsCount !== 0 ? (
         <div className='w-full h-[87.5vh] flex justify-center items-center'>
           <div className='p-4 flex flex-col gap-2 items-center rounded-lg bg-zinc-100'>
             <BeatLoader
               color={CYAN_400}
               size={20}
             />
-            <p className='text-lg font-nunito font-bold'>Loading products</p>
+            <p className='text-lg font-nunito font-bold'>
+              Loading products ({secondsCount}s)
+            </p>
           </div>
         </div>
       ) : (
