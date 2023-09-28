@@ -1,27 +1,17 @@
-# React + TypeScript + Vite
+# Poke Bowl Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An app that tests all of my API consumption, data caching, state management and
+mobile responsiveness skills on web applications. This app also shows that I now
+how to properly implement in memory filtering and pagination on e-commerce sites.
 
-Currently, two official plugins are available:
+> Keep in mind that the PokéAPI endpoints does not offer any kind of filter mechanism, so both filtering and pagination must be done in memory.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Backlog
 
-## Expanding the ESLint configuration
+> This section contains all of the future functionalities that I want to add to
+> the project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Implement product sorting.
+- Make the request sending process more efficient and reduce loading times
+- Implement image lazy loading.
+- Add animations when the images show or when tha cart products are deleted
